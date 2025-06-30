@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure Public Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 50px;
+            background: white;
+        }
+        h2 {
+            color: #333;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Secure Calculator</h2>
+
+    <div id="password-section">
+        <input type="password" id="passwordInput" placeholder="Enter access password">
+        <button onclick="checkPassword()">Submit</button>
+    </div>
+
+    <div id="calculator-section" style="display:none;">
+        <input type="number" id="num1" placeholder="Enter first number">
+        <input type="number" id="num2" placeholder="Enter second number">
+        <select id="operation">
+            <option value="add">Add</option>
+            <option value="subtract">Subtract</option>
+            <option value="multiply">Multiply</option>
+            <option value="divide">Divide</option>
+        </select>
+        <button onclick="calculate()">Calculate</button>
+
+        <h3 id="result"></h3>
+    </div>
+
+    <script>
+        const allowedPassword = "mySecret123";
+
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value.trim();
+            if (password === allowedPassword) {
+                document.getElementById('password-section').style.display = 'none';
+                document.getElementById('calculator-section').style.display = 'block';
+            } else {
+                alert("Incorrect Password. Access Denied.");
+            }
+        }
+
+        function calculate() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const operation = document.getElementById('operation').value;
+            let result;
+
+            if (isNaN(num1) || isNaN(num2)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
+
+            switch (operation) {
+                case 'add': result = num1 + num2; break;
+                case 'subtract': result = num1 - num2; break;
+                case 'multiply': result = num1 * num2; break;
+                case 'divide':
+                    if (num2 === 0) {
+                        alert("Cannot divide by zero.");
+                        return;
+                    }
+                    result = num1 / num2; break;
+                default: result = "Invalid operation";
+            }
+
+            document.getElementById('result').innerText = "Result: " + result;
+        }
+    </script>
+</body>
+</html>
+
